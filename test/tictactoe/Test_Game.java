@@ -7,11 +7,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class Test_Game {
 
     public static List<Player> createMockPlayersRegister() {
@@ -23,11 +24,17 @@ public class Test_Game {
         return register;
     }
 
+    @Mock
+    private TupleReader reader;
+
 
     @Test(expected = Test.None.class /* no exception expected */)
     public void  testBuildGame() throws Exception {
+
+        Mockito.when(reader.getTuples()).thenReturn(new String[]{"1", "," ,"2"});
+
         CheckerBoard checker = new CheckerBoard(3);
-        Game g = new Game(createMockPlayersRegister(), checker);
+        Game g = new Game(createMockPlayersRegister(), checker, reader);
     }
 
     @Test
@@ -36,7 +43,7 @@ public class Test_Game {
 
             CheckerBoard checker = new CheckerBoard(3);
             checker.put(0,0, 'X');
-            Game g = new Game(createMockPlayersRegister(), checker);
+            Game g = new Game(createMockPlayersRegister(), checker, reader);
             assertThat(g.isWinner()).isFalse();
 
         } catch (Exception e ) {
@@ -59,7 +66,7 @@ public class Test_Game {
     public void testGameWithWinner() {
         try {
 
-            Game g = new Game(createMockPlayersRegister(), this.buildWinCheckerBoard());
+            Game g = new Game(createMockPlayersRegister(), this.buildWinCheckerBoard(), reader);
             assertThat(g.isWinner()).isTrue();
 
         } catch (Exception e) {
@@ -69,13 +76,13 @@ public class Test_Game {
 
     @Test
     public void nextTurnTrueWhenStart() throws Exception {
-        Game g = new Game(createMockPlayersRegister(), new CheckerBoard(3));
+        Game g = new Game(createMockPlayersRegister(), new CheckerBoard(3), reader);
         assertThat(g.solveNextTurn()).isTrue();
     }
 
     @Test
     public void nextTurnFalseWhenWin()  throws Exception {
-        Game g = new Game(createMockPlayersRegister(), this.buildWinCheckerBoard());
+        Game g = new Game(createMockPlayersRegister(), this.buildWinCheckerBoard(), reader);
         assertThat(g.solveNextTurn()).isFalse();
     }
 
@@ -85,7 +92,16 @@ public class Test_Game {
     @Test
     public void nextTurnFalseWhenBoardIsFull() throws Exception {
         Mockito.when(mockCB.isBoardFull()).thenReturn(true);
-        Game g = new Game(createMockPlayersRegister(), mockCB);
+        Game g = new Game(createMockPlayersRegister(), mockCB, reader);
         assertThat(g.solveNextTurn()).isFalse();
+    }
+
+
+    @Test
+    public void nextTurnnextPlayer() throws Exception {
+        Game g = new Game(createMockPlayersRegister(), new CheckerBoard(3), reader);
+        assertThat(g.getCurrentPlayer().getName()).isEqualTo("UNO");
+        g.solveNextTurn();
+        assertThat(g.getCurrentPlayer().getName()).isEqualTo("Bob");
     }
 }

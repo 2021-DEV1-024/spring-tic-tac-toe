@@ -68,4 +68,18 @@ public class CheckerBoard {
 
         return true;
     }
+
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Checker Board Status:     -----    \n");
+        for (Character[] characters : checker) {
+            sb.append('|');
+            for (Character character : characters) {
+                sb.append(String.valueOf(character)).append('|');
+            }
+            sb.append('\n');
+        }
+        return sb.toString();
+    }
 }

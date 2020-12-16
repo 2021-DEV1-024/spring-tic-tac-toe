@@ -1,5 +1,6 @@
 package tictactoe;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -7,20 +8,50 @@ public class Game {
 
     private CheckerBoard checker;
     private List<Player> playersRegister;
+    private TupleReader reader;
+    private int currentPlayerIdx;
     private int turn = 0;
 
-    public Game(List<Player> playersRegister, CheckerBoard checker) {
+    public Game(List<Player> playersRegister, CheckerBoard checker, TupleReader reader) {
         this.playersRegister = playersRegister;
         this.checker = checker;
+        this.reader = reader;
+        this.currentPlayerIdx = 0;
     }
 
 
     public boolean solveNextTurn() {
         // if there is a winner
         // if the board is full
+        this.log("Turn #"+ turn + "Next Player " + getCurrentPlayer().getName());
+        List<Character> marks = Arrays.asList('X', 'O');
+        try {
+            // read tuple
+            String[] tuples = this.reader.getTuples();
+            int x = Integer.parseInt(tuples[0]);
+            int y = Integer.parseInt(tuples[2]);
+
+
+            this.checker.put(x, y, marks.get(currentPlayerIdx));
+        } catch(RuntimeException e) {
+           System.out.println(e.getMessage());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
 
         this.turn++;
+
+
+        this.switchToNextPlayer();
+
+        log(""+this.isWinner());
+        log(""+this.checker.isBoardFull());
+
+
         if(this.isWinner() || this.checker.isBoardFull()) {
+            log("Winner!");
             return false;
         } else
         {
@@ -31,6 +62,19 @@ public class Game {
 
     public void log(String message) {
         System.out.println(message);
+    }
+
+    public Player getCurrentPlayer() {
+        return this.playersRegister.get(currentPlayerIdx);
+    }
+
+    private void switchToNextPlayer() {
+
+        if(currentPlayerIdx == 0) {
+            this.currentPlayerIdx = 1;
+        } else {
+            this.currentPlayerIdx = 0;
+        }
     }
 
     public boolean isWinner() {

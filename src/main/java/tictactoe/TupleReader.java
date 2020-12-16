@@ -1,5 +1,7 @@
 package tictactoe;
 
+import org.springframework.context.annotation.Bean;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 

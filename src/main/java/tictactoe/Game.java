@@ -1,19 +1,24 @@
 package tictactoe;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+@Service
 public class Game {
-
     private CheckerBoard checker;
+
     private List<Player> playersRegister;
     private TupleReader reader;
     private int currentPlayerIdx;
     private int turn = 0;
 
-    public Game(List<Player> playersRegister, CheckerBoard checker, TupleReader reader) {
-        this.playersRegister = playersRegister;
+    @Autowired
+    public Game(PlayerBuilder playerBuilder, CheckerBoard checker, TupleReader reader) {
+        this.playersRegister = playerBuilder.buildAll();
         this.checker = checker;
         this.reader = reader;
         this.currentPlayerIdx = 0;

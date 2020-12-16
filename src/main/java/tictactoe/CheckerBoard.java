@@ -1,10 +1,14 @@
 package tictactoe;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+@Component
 public class CheckerBoard {
     private static final int MIN_CHECKERBOARD_S = 3;
     private static final int MAX_CHECKERBOARD_S = 9;
@@ -13,7 +17,14 @@ public class CheckerBoard {
     private static final String INVALID_POSITION = "Position is not valid";
     Character[][] checker;
 
-    public CheckerBoard(int size) throws Exception {
+    /**
+     * Constructor
+     *
+     * @param size
+     * @throws Exception
+     */
+    @Autowired
+    public CheckerBoard(@Value("${boardSize}") int size) throws Exception {
         if( size < MIN_CHECKERBOARD_S || size > MAX_CHECKERBOARD_S ) {
             throw new Exception(SIZE_IS_INVALID);
         }

@@ -53,7 +53,7 @@ public class CheckerBoard {
     }
 
 
-    boolean isBoardFull() {
+    public boolean isBoardFull() {
     // check for a cell that contains ' '
 
         for(int i=0;i<checker.length; i++) {

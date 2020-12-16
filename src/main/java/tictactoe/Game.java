@@ -7,10 +7,26 @@ public class Game {
 
     private CheckerBoard checker;
     private List<Player> playersRegister;
+    private int turn = 0;
 
     public Game(List<Player> playersRegister, CheckerBoard checker) {
         this.playersRegister = playersRegister;
         this.checker = checker;
+    }
+
+
+    public boolean solveNextTurn() {
+        // if there is a winner
+        // if the board is full
+
+        this.turn++;
+        if(this.isWinner() || this.checker.isBoardFull()) {
+            return false;
+        } else
+        {
+          return true;
+        }
+
     }
 
     public void log(String message) {

@@ -31,6 +31,10 @@ public class CheckerBoard {
     public int getSize() {
         return this.checker.length;
     }
+    Character getC(int x, int y) {
+        return this.checker[x][y];
+    }
+
 
     final public void put(int x, int y, Character mark) throws Exception {
         if (x < 0 || x >= checker.length) {

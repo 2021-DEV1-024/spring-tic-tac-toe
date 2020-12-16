@@ -39,6 +39,7 @@ public class Test_Game {
         }
     }
 
+    @Test
     public void testGameWithWinner() {
         try {
             CheckerBoard checker = new CheckerBoard(3);

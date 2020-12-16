@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class Test_Payer {
+public class Test_Player {
 
     @Test
     public void testcheckName() {
